@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apresentação interativa sobre Engenharia de Prompt e orientação profissional para o primeiro emprego.">
+  <title>Engenharia de Prompt | Primeiro Emprego</title>
+
+  <style>
+    :root {
+      --azul-900: #123f8c;
+      --azul-700: #2563c7;
+      --azul-500: #5f9be8;
+      --azul-100: #eaf3ff;
+      --azul-050: #f7fbff;
+
+      --laranja-700: #e96f14;
+      --laranja-500: #f47a20;
+      --laranja-100: #fff0e5;
+
+      --texto: #29466f;
+      --texto-suave: #6d7f9b;
+      --branco: #ffffff;
+      --borda: #d9e7f7;
+
+      --sombra: 0 18px 44px rgba(30, 73, 133, 0.12);
+      --raio: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--texto);
+      background:
+        radial-gradient(circle at 92% 7%, #e6f1ff 0 9%, transparent 9.2%),
+        linear-gradient(135deg, #fbfdff 0%, #edf5ff 100%);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOPO */
+    .topo {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 22px;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--borda);
+      backdrop-filter: blur(10px);
+    }
+
+    .marca {
+      color: var(--azul-900);
+      font-size: 1rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .topo-direita {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contador {
+      color: var(--texto-suave);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .btn-utilidade {
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      padding: 8px 11px;
+      background: var(--branco);
+      color: var(--azul-700);
+      cursor: pointer;
+    }
+
+    .btn-utilidade:hover {
+      background: var(--azul-100);
+    }
+
+    /* NAVEGAÇÃO PRINCIPAL */
+    .nav-secoes-wrap {
+      position: sticky;
+      top: 57px;
+      z-index: 45;
+      background: rgba(247, 251, 255, 0.96);
+      border-bottom: 1px solid var(--borda);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-secoes {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .nav-secoes::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .nav-secoes::-webkit-scrollbar-thumb {
+      background: #c9d9ed;
+      border-radius: 999px;
+    }
+
+    .nav-btn {
+      flex: 0 0 auto;
+      border: 1px solid #cdddf1;
+      border-radius: 999px;
+      padding: 9px 14px;
+      background: var(--branco);
+      color: var(--azul-700);
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--azul-100);
+      border-color: #b7d0ee;
+    }
+
+    .nav-btn.ativo {
+      background: var(--azul-700);
+      border-color: var(--azul-700);
+      color: var(--branco);
+    }
+
+    /* SLIDES */
+    .slides {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 22px;
+    }
+
+    .slide {
+      display: none;
+      width: min(1180px, 100%);
+      min-height: 610px;
+      padding: clamp(28px, 4vw, 52px);
+      position: relative;
+      overflow: hidden;
+      background: var(--branco);
+      border: 1px solid rgba(217, 231, 247, 0.95);
+      border-radius: 28px;
+      box-shadow: var(--sombra);
+    }
+
+    .slide.ativo {
+      display: block;
+      animation: entrada 0.24s ease;
+    }
+
+    @keyframes entrada {
+      from {
+        opacity: 0;
+        transform: translateY(7px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      top: -125px;
+      right: -85px;
+      background: var(--azul-100);
+      z-index: 0;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      width: 440px;
+      height: 105px;
+      left: -100px;
+      bottom: -70px;
+      border-radius: 50%;
+      transform: rotate(-6deg);
+      background: rgba(244, 122, 32, 0.08);
+      z-index: 0;
+    }
+
+    .conteudo {
+      position: relative;
+      z-index: 2;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: var(--laranja-100);
+      color: var(--laranja-700);
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      color: var(--azul-900);
+      font-size: clamp(2.1rem, 5vw, 4.25rem);
+      line-height: 1.03;
+    }
+
+    h2 {
+      margin: 0 0 15px;
+      color: var(--azul-700);
+      font-size: clamp(1.4rem, 2.7vw, 2.15rem);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      color: var(--azul-900);
+      font-size: 1.25rem;
+    }
+
+    .subtitulo {
+      margin: 0 0 24px;
+      color: var(--laranja-700);
+      font-size: clamp(1.04rem, 2vw, 1.28rem);
+    }
+
+    .descricao {
+      max-width: 850px;
+      margin: 0 0 26px;
+      font-size: 1.1rem;
+      line-height: 1.62;
+    }
+
+    .grid-4,
+    .grid-2 {
+      display: grid;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      min-width: 0;
+      padding: 20px;
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      box-shadow: 0 8px 22px rgba(36, 82, 148, 0.07);
+    }
+
+    .card p {
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ABAS */
+    .abas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 18px 0;
+    }
+
+    .aba {
+      border: 1px solid #c9daf0;
+      border-radius: 12px;
+      padding: 10px 16px;
+      background: var(--branco);
+      color: var(--azul-700);
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .aba:hover {
+      background: var(--azul-100);
+    }
+
+    .aba.ativa {
+      background: var(--azul-700);
+      border-color: var(--azul-700);
+      color: var(--branco);
+    }
+
+    .painel {
+      display: none;
+    }
+
+    .painel.ativo {
+      display: block;
+      animation: entrada 0.18s ease;
+    }
+
+    .estrutura {
+      margin: 0 0 10px;
+      color: var(--laranja-700);
+    }
+
+    .prompt-box {
+      padding: 20px;
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      background: var(--azul-050);
+      line-height: 1.62;
+    }
+
+    .resposta-box {
+      padding: 20px;
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      background: #fbfdff;
+      line-height: 1.58;
+    }
+
+    .resposta-box ul {
+      margin: 10px 0 0 20px;
+      padding: 0;
+    }
+
+    .resposta-box li {
+      margin-bottom: 7px;
+    }
+
+    /* COMPARAÇÃO */
+    .comparacao-linha {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 11px;
+      padding: 15px 18px;
+      border: 1px solid #e1ebf7;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .sigla {
+      color: var(--azul-900);
+      font-size: 1.15rem;
+    }
+
+    .resultado-geral {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 17px;
+      border: 1px solid #ffd2a7;
+      border-radius: 13px;
+      background: var(--laranja-100);
+      color: var(--azul-900);
+    }
+
+    /* LISTA */
+    .lista {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 15px 17px;
+      border-left: 4px solid var(--azul-700);
+      border-radius: 13px;
+      background: var(--azul-050);
+      line-height: 1.52;
+    }
+
+    .numero {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--azul-100);
+      color: var(--azul-700);
+    }
+
+    .caixa-destaque {
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid #c8ddf8;
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--azul-100), #f9fcff);
+      line-height: 1.55;
+    }
+
+    /* CONCLUSÕES INTERATIVAS */
+    .questoes {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .questao-btn {
+      min-height: 72px;
+      padding: 12px 13px;
+      border: 1px solid #cbdcf1;
+      border-radius: 14px;
+      background: var(--branco);
+      color: var(--azul-700);
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.25;
+      transition: 0.18s ease;
+    }
+
+    .questao-btn:hover {
+      background: var(--azul-100);
+      transform: translateY(-1px);
+    }
+
+    .questao-btn.ativa {
+      background: var(--azul-700);
+      border-color: var(--azul-700);
+      color: var(--branco);
+    }
+
+    .resposta-final {
+      min-height: 155px;
+      display: grid;
+      align-content: center;
+      padding: 24px;
+      border: 1px solid var(--borda);
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fbfdff, var(--azul-050));
+    }
+
+    .resposta-final h3 {
+      margin-bottom: 10px;
+      color: var(--azul-900);
+      font-size: 1.35rem;
+    }
+
+    .resposta-final p {
+      margin: 0;
+      line-height: 1.62;
+      font-size: 1.05rem;
+    }
+
+    /* RODAPÉ */
+    .rodape {
+      display: flex;
+      justify-content: center;
+      padding: 0 16px 20px;
+    }
+
+    .atalhos {
+      color: var(--texto-suave);
+      font-size: 0.84rem;
+      text-align: center;
+    }
+
+    .nav-btn:focus-visible,
+    .aba:focus-visible,
+    .questao-btn:focus-visible,
+    .btn-utilidade:focus-visible {
+      outline: 3px solid rgba(37, 99, 199, 0.28);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 950px) {
+      .grid-4,
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .questoes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .slide {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topo {
+        padding: 12px 14px;
+      }
+
+      .contador {
+        display: none;
+      }
+
+      .nav-secoes-wrap {
+        top: 55px;
+      }
+
+      .slides {
+        padding: 12px;
+      }
+
+      .slide {
+        padding: 24px 18px;
+        border-radius: 20px;
+      }
+
+      .grid-4,
+      .grid-2,
+      .questoes {
+        grid-template-columns: 1fr;
+      }
+
+      .comparacao-linha {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .marca {
+        font-size: 0.92rem;
+      }
+
+      .btn-utilidade {
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <header class="topo">
+      <div class="marca">Engenharia de Prompt</div>
+
+      <div class="topo-direita">
+        <span class="contador" id="contador">1 de 7</span>
+        <button class="btn-utilidade" id="telaCheia" type="button">Tela cheia</button>
+      </div>
+    </header>
+
+    <div class="nav-secoes-wrap">
+      <nav class="nav-secoes" id="navSecoes" aria-label="Seções da apresentação">
+        <button class="nav-btn ativo" type="button" data-slide="0">Início</button>
+        <button class="nav-btn" type="button" data-slide="1">Prompts</button>
+        <button class="nav-btn" type="button" data-slide="2">Respostas</button>
+        <button class="nav-btn" type="button" data-slide="3">Comparação</button>
+        <button class="nav-btn" type="button" data-slide="4">Melhor estrutura</button>
+        <button class="nav-btn" type="button" data-slide="5">Melhoria do PTF</button>
+        <button class="nav-btn" type="button" data-slide="6">Conclusões</button>
+      </nav>
+    </div>
+
+    <main class="slides">
+
+      <!-- 1. INÍCIO -->
+      <section class="slide ativo" aria-label="Início">
+        <div class="conteudo">
+          <span class="tag">SENAC • 2026</span>
+          <h1>Engenharia de Prompt</h1>
+          <p class="subtitulo">Orientação profissional para quem busca o primeiro emprego</p>
+
+          <p class="descricao">
+            A atividade compara quatro estruturas de prompt aplicadas ao mesmo tema:
+            PTF, CTF, CPTF e EPTF.
+          </p>
+
+          <h2>Estruturas utilizadas</h2>
+
+          <div class="grid-4">
+            <div class="card">
+              <h3>PTF</h3>
+              <p>Profissional, Tarefa e Formato.</p>
+            </div>
+
+            <div class="card">
+              <h3>CTF</h3>
+              <p>Contexto, Tarefa e Formato.</p>
+            </div>
+
+            <div class="card">
+              <h3>CPTF</h3>
+              <p>Contexto, Profissional, Tarefa e Formato.</p>
+            </div>
+
+            <div class="card">
+              <h3>EPTF</h3>
+              <p>Exemplo, Profissional, Tarefa e Formato.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PROMPTS -->
+      <section class="slide" aria-label="Prompts utilizados">
+        <div class="conteudo">
+          <span class="tag">Prompts</span>
+          <h1>Prompts utilizados</h1>
+          <p class="subtitulo">Selecione uma estrutura</p>
+
+          <div class="abas" data-grupo="prompts">
+            <button class="aba ativa" type="button" data-alvo="prompt-ptf">PTF</button>
+            <button class="aba" type="button" data-alvo="prompt-ctf">CTF</button>
+            <button class="aba" type="button" data-alvo="prompt-cptf">CPTF</button>
+            <button class="aba" type="button" data-alvo="prompt-eptf">EPTF</button>
+          </div>
+
+          <div class="painel ativo" id="prompt-ptf">
+            <p class="estrutura">PTF — Profissional, Tarefa e Formato</p>
+            <div class="prompt-box">
+              Atue como orientador profissional especializado em preparação para o mercado de trabalho.
+              Crie orientações práticas para uma pessoa que busca seu primeiro emprego e ainda não possui
+              experiência profissional. Apresente a resposta em uma lista com 8 dicas, abordando currículo,
+              procura por vagas, preparação para entrevistas e postura profissional.
+            </div>
+          </div>
+
+          <div class="painel" id="prompt-ctf">
+            <p class="estrutura">CTF — Contexto, Tarefa e Formato</p>
+            <div class="prompt-box">
+              Uma pessoa está procurando seu primeiro emprego e possui formação ou cursos, mas ainda não teve
+              experiência profissional formal. Ela tem dúvidas sobre como preparar o currículo, encontrar
+              oportunidades e participar de entrevistas. Crie orientações que ajudem essa pessoa a se preparar
+              para entrar no mercado de trabalho. Organize a resposta em quatro tópicos: currículo, busca de vagas,
+              entrevista e comportamento profissional.
+            </div>
+          </div>
+
+          <div class="painel" id="prompt-cptf">
+            <p class="estrutura">CPTF — Contexto, Profissional, Tarefa e Formato</p>
+            <div class="prompt-box">
+              Uma pessoa está buscando seu primeiro emprego e não possui experiência profissional formal, mas tem
+              formação, cursos, conhecimentos e habilidades que podem ser valorizados pelas empresas. Atue como
+              orientador profissional especializado em recrutamento e seleção. Elabore um guia para ajudá-la a se
+              preparar para o primeiro emprego, desde a criação do currículo até a entrevista. Apresente a resposta
+              em uma lista organizada por etapas, com orientações práticas e exemplos.
+            </div>
+          </div>
+
+          <div class="painel" id="prompt-eptf">
+            <p class="estrutura">EPTF — Exemplo, Profissional, Tarefa e Formato</p>
+            <div class="prompt-box">
+              Considere o seguinte exemplo de orientação profissional:
+              “Currículo: mesmo sem experiência profissional, o candidato pode destacar sua formação, cursos,
+              projetos acadêmicos, trabalhos voluntários e habilidades relacionadas à vaga.”
+              Atue como orientador profissional especializado em recrutamento e seleção e crie outras orientações
+              para pessoas que estão buscando o primeiro emprego. Apresente a resposta seguindo o mesmo padrão do
+              exemplo, utilizando os tópicos currículo, busca de vagas, entrevista e postura profissional.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. RESPOSTAS -->
+      <section class="slide" aria-label="Respostas obtidas">
+        <div class="conteudo">
+          <span class="tag">Respostas</span>
+          <h1>Respostas obtidas</h1>
+          <p class="subtitulo">Selecione uma estrutura para visualizar o resultado</p>
+
+          <div class="abas" data-grupo="respostas">
+            <button class="aba ativa" type="button" data-alvo="resposta-ptf">PTF</button>
+            <button class="aba" type="button" data-alvo="resposta-ctf">CTF</button>
+            <button class="aba" type="button" data-alvo="resposta-cptf">CPTF</button>
+            <button class="aba" type="button" data-alvo="resposta-eptf">EPTF</button>
+          </div>
+
+          <div class="painel ativo" id="resposta-ptf">
+            <div class="resposta-box">
+              <h3>PTF</h3>
+              <ul>
+                <li>Preparar um currículo objetivo e destacar formação, cursos e habilidades.</li>
+                <li>Incluir projetos acadêmicos, trabalhos voluntários ou atividades extracurriculares.</li>
+                <li>Pesquisar vagas em plataformas de emprego, LinkedIn e páginas de empresas.</li>
+                <li>Pesquisar a empresa antes da entrevista e preparar respostas para perguntas comuns.</li>
+                <li>Demonstrar interesse, responsabilidade e disposição para aprender.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="painel" id="resposta-ctf">
+            <div class="resposta-box">
+              <h3>CTF</h3>
+              <ul>
+                <li>Currículo: destacar formação, cursos, projetos e habilidades.</li>
+                <li>Busca de vagas: usar plataformas, LinkedIn e páginas de empresas.</li>
+                <li>Entrevista: pesquisar a empresa e preparar exemplos de competências.</li>
+                <li>Comportamento profissional: pontualidade, clareza e interesse pela oportunidade.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="painel" id="resposta-cptf">
+            <div class="resposta-box">
+              <h3>CPTF</h3>
+              <ul>
+                <li>Identificar competências desenvolvidas em estudos, cursos e projetos.</li>
+                <li>Preparar um currículo simples e objetivo.</li>
+                <li>Buscar vagas adequadas para profissionais iniciantes.</li>
+                <li>Preparar-se para a entrevista com exemplos de responsabilidade e iniciativa.</li>
+                <li>Valorizar experiências adquiridas fora do emprego formal.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="painel" id="resposta-eptf">
+            <div class="resposta-box">
+              <h3>EPTF</h3>
+              <ul>
+                <li>Currículo: destacar formação, cursos, projetos e conhecimentos relacionados à vaga.</li>
+                <li>Busca de vagas: procurar oportunidades voltadas a profissionais iniciantes.</li>
+                <li>Entrevista: conhecer a empresa, a vaga e preparar exemplos de habilidades.</li>
+                <li>Postura profissional: ser pontual, educado e demonstrar interesse.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. COMPARAÇÃO -->
+      <section class="slide" aria-label="Comparação dos resultados">
+        <div class="conteudo">
+          <span class="tag">Comparação</span>
+          <h1>Comparação dos resultados</h1>
+          <p class="subtitulo">Diferenças observadas entre as estruturas</p>
+
+          <div class="comparacao-linha">
+            <div class="sigla">PTF</div>
+            <div>Organizou bem a resposta, mas permaneceu mais geral.</div>
+          </div>
+
+          <div class="comparacao-linha">
+            <div class="sigla">CTF</div>
+            <div>O contexto tornou a orientação mais direcionada à situação apresentada.</div>
+          </div>
+
+          <div class="comparacao-linha">
+            <div class="sigla">CPTF</div>
+            <div>Combinou contexto e papel profissional, resultando em uma orientação mais completa e prática.</div>
+          </div>
+
+          <div class="comparacao-linha">
+            <div class="sigla">EPTF</div>
+            <div>O exemplo ajudou a manter o padrão de organização solicitado.</div>
+          </div>
+
+          <div class="resultado-geral">
+            Nesta comparação, a estrutura mais adequada foi a CPTF.
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. MELHOR ESTRUTURA -->
+      <section class="slide" aria-label="Melhor estrutura">
+        <div class="conteudo">
+          <span class="tag">Análise</span>
+          <h1>Por que a CPTF foi mais adequada?</h1>
+          <p class="subtitulo">Resultado observado no tema escolhido</p>
+
+          <div class="lista">
+            <div class="item">
+              <div class="numero">1</div>
+              <div>O contexto apresentou a situação de quem busca o primeiro emprego.</div>
+            </div>
+
+            <div class="item">
+              <div class="numero">2</div>
+              <div>O papel profissional orientou a resposta para recrutamento e seleção.</div>
+            </div>
+
+            <div class="item">
+              <div class="numero">3</div>
+              <div>A tarefa definiu com clareza o que deveria ser produzido.</div>
+            </div>
+
+            <div class="item">
+              <div class="numero">4</div>
+              <div>O formato ajudou a organizar as orientações em etapas.</div>
+            </div>
+          </div>
+
+          <div class="caixa-destaque">
+            A combinação desses elementos tornou a resposta mais específica para o público e mais útil para a situação proposta.
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. MELHORIA -->
+      <section class="slide" aria-label="Melhoria do PTF">
+        <div class="conteudo">
+          <span class="tag">Melhoria</span>
+          <h1>Revisão do PTF</h1>
+          <p class="subtitulo">Ajuste da estrutura que apresentou o resultado mais fraco</p>
+
+          <div class="grid-2">
+            <div class="card">
+              <h2>Pontos a melhorar</h2>
+              <div class="lista">
+                <div class="item">
+                  <div class="numero">1</div>
+                  <div>Especificar melhor o papel profissional.</div>
+                </div>
+
+                <div class="item">
+                  <div class="numero">2</div>
+                  <div>Detalhar os assuntos que a orientação deve abordar.</div>
+                </div>
+
+                <div class="item">
+                  <div class="numero">3</div>
+                  <div>Definir um formato mais preciso para a resposta.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>PTF melhorado</h2>
+              <div class="prompt-box">
+                Atue como orientador profissional especializado em recrutamento de candidatos em início de carreira.
+                Crie 8 orientações práticas sobre como buscar o primeiro emprego, abordando currículo, identificação
+                de competências, procura de vagas, preparação para entrevistas e postura profissional.
+                Apresente a resposta em uma lista numerada com linguagem simples e objetiva, incluindo uma ação prática em cada item.
+              </div>
+            </div>
+          </div>
+
+          <div class="caixa-destaque">
+            A revisão mantém a estrutura PTF, mas torna papel, tarefa e formato mais específicos.
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. CONCLUSÕES -->
+      <section class="slide" aria-label="Conclusões">
+        <div class="conteudo">
+          <span class="tag">Conclusões</span>
+          <h1>Análise final</h1>
+          <p class="subtitulo">Selecione uma pergunta</p>
+
+          <div class="questoes" id="questoes">
+            <button class="questao-btn ativa" type="button"
+              data-titulo="Qual prompt gerou a resposta mais completa?"
+              data-resposta="A estrutura CPTF gerou a resposta mais completa, pois reuniu contexto, papel profissional, tarefa e formato.">
+              Mais completo
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="Qual resposta ficou mais adequada ao público?"
+              data-resposta="A resposta da CPTF ficou mais adequada ao público porque considerou diretamente a situação de quem busca o primeiro emprego.">
+              Adequação ao público
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="O contexto modificou o resultado?"
+              data-resposta="Sim. O contexto deixou a orientação mais específica para a situação apresentada.">
+              Contexto
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="Informar um papel profissional ajudou?"
+              data-resposta="Sim. O papel de orientador profissional direcionou a resposta para recrutamento, seleção e preparação para o mercado de trabalho.">
+              Papel profissional
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="O exemplo tornou a resposta mais próxima do esperado?"
+              data-resposta="Sim. No EPTF, o exemplo serviu como referência para a organização da resposta.">
+              Exemplo
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="Alguma resposta apresentou informações incorretas ou inventadas?"
+              data-resposta="Não foram identificadas informações incorretas ou inventadas nas respostas obtidas.">
+              Informações incorretas
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="O que foi alterado para melhorar o prompt?"
+              data-resposta="No PTF, o papel profissional foi especificado, a tarefa ganhou mais detalhes e o formato passou a definir melhor como a resposta deveria ser organizada.">
+              Melhoria do prompt
+            </button>
+
+            <button class="questao-btn" type="button"
+              data-titulo="Qual estrutura o grupo utilizaria novamente e por quê?"
+              data-resposta="A CPTF, porque reuniu os elementos que produziram uma resposta mais direcionada e útil para o tema escolhido.">
+              Estrutura escolhida
+            </button>
+          </div>
+
+          <div class="resposta-final" id="respostaFinal" aria-live="polite">
+            <h3 id="tituloResposta">Qual prompt gerou a resposta mais completa?</h3>
+            <p id="textoResposta">
+              A estrutura CPTF gerou a resposta mais completa, pois reuniu contexto, papel profissional, tarefa e formato.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="rodape">
+      <div class="atalhos">
+        Você também pode usar ← e → no teclado para navegar.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const navBotoes = Array.from(document.querySelectorAll(".nav-btn"));
+    const contador = document.getElementById("contador");
+    const telaCheia = document.getElementById("telaCheia");
+
+    let slideAtual = 0;
+
+    function mostrarSlide(indice) {
+      if (indice < 0 || indice >= slides.length) return;
+
+      slideAtual = indice;
+
+      slides.forEach((slide, i) => {
+        const ativo = i === slideAtual;
+        slide.classList.toggle("ativo", ativo);
+        slide.setAttribute("aria-hidden", String(!ativo));
+      });
+
+      navBotoes.forEach((botao, i) => {
+        const ativo = i === slideAtual;
+        botao.classList.toggle("ativo", ativo);
+        botao.setAttribute("aria-current", ativo ? "page" : "false");
+      });
+
+      contador.textContent = `${slideAtual + 1} de ${slides.length}`;
+
+      navBotoes[slideAtual].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center"
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    navBotoes.forEach((botao) => {
+      botao.addEventListener("click", () => {
+        mostrarSlide(Number(botao.dataset.slide));
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        mostrarSlide((slideAtual + 1) % slides.length);
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        mostrarSlide((slideAtual - 1 + slides.length) % slides.length);
+      }
+    });
+
+    /* Abas independentes para prompts e respostas */
+    document.querySelectorAll(".abas").forEach((grupo) => {
+      const botoes = Array.from(grupo.querySelectorAll(".aba"));
+
+      botoes.forEach((botao) => {
+        botao.addEventListener("click", () => {
+          const alvo = botao.dataset.alvo;
+          const slide = botao.closest(".slide");
+
+          botoes.forEach((item) => item.classList.remove("ativa"));
+          botao.classList.add("ativa");
+
+          slide.querySelectorAll(".painel").forEach((painel) => {
+            painel.classList.toggle("ativo", painel.id === alvo);
+          });
+        });
+      });
+    });
+
+    /* Perguntas da análise final */
+    const questoes = Array.from(document.querySelectorAll(".questao-btn"));
+    const tituloResposta = document.getElementById("tituloResposta");
+    const textoResposta = document.getElementById("textoResposta");
+
+    questoes.forEach((botao) => {
+      botao.addEventListener("click", () => {
+        questoes.forEach((item) => item.classList.remove("ativa"));
+        botao.classList.add("ativa");
+
+        tituloResposta.textContent = botao.dataset.titulo;
+        textoResposta.textContent = botao.dataset.resposta;
+      });
+    });
+
+    /* Tela cheia */
+    telaCheia.addEventListener("click", async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (erro) {
+        alert("Não foi possível ativar a tela cheia neste navegador.");
+      }
+    });
+
+    document.addEventListener("fullscreenchange", () => {
+      telaCheia.textContent = document.fullscreenElement
+        ? "Sair da tela cheia"
+        : "Tela cheia";
+    });
+
+    mostrarSlide(0);
+  </script>
+</body>
+</html>
